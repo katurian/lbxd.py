@@ -1,3 +1,5 @@
+from setup import * 
+
 def getGenres():
     nonce = uuid.uuid4()
     timestamp = int(time.time())
