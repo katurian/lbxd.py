@@ -1,5 +1,23 @@
 from setup import *
 
+def postComment(comment):
+    nonce = uuid.uuid4()
+    timestamp = int(time.time())
+    method = "POST"
+    url = f'https://api.letterboxd.com/api/v0/log-entry/14JSU7/comments?apikey={apikey}&nonce={nonce}&timestamp={timestamp}'
+    body = {'comment':comment}
+    body = json.dumps(body)
+    bytestring = b"\x00".join(
+        [str.encode(method), str.encode(url), str.encode(body)]
+    )
+    signature = hmac.new(
+        str.encode(apisecret), bytestring, digestmod=hashlib.sha256
+    )
+    signature = signature.hexdigest()
+    r = requests.post(f'https://api.letterboxd.com/api/v0/log-entry/14JSU7/comments?apikey={apikey}&nonce={nonce}&timestamp={timestamp}&signature={signature}', headers={'Content-Type': 'application/json', 'Accept': 'application/json', 'Authorization': bearertoken}, data=body, verify=False)
+    resultJSON = r.json()
+    print(resultJSON)
+
 def getEntryInfo(code):
     nonce = uuid.uuid4()
     timestamp = int(time.time())
