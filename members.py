@@ -1,3 +1,5 @@
+from setup import *
+
 def getMembers():
     nonce = uuid.uuid4()
     timestamp = int(time.time())
