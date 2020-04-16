@@ -34,3 +34,5 @@ def getContributions(code):
     r = requests.get(f'https://api.letterboxd.com/api/v0/contributor/{code}/contributions?sort=FilmPopularity&perPage=20&apikey={apikey}&nonce={nonce}&timestamp={timestamp}&signature={signature}', verify=False)
     resultJSON = r.json()
     return resultJSON
+
+
