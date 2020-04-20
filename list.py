@@ -1,5 +1,21 @@
 from setup import *
 
+def postListComment(code, comment):
+    nonce = uuid.uuid4()
+    timestamp = int(time.time())
+    method = "POST"
+    url = f'https://api.letterboxd.com/api/v0/list/{code}/comments?apikey={apikey}&nonce={nonce}&timestamp={timestamp}'
+    body = {'comment':comment}
+    body = json.dumps(body)
+    bytestring = b"\x00".join(
+        [str.encode(method), str.encode(url), str.encode(body)]
+    )
+    signature = hmac.new(
+        str.encode(apisecret), bytestring, digestmod=hashlib.sha256
+    )
+    signature = signature.hexdigest()
+    r = requests.post(f'https://api.letterboxd.com/api/v0/list/{code}/comments?apikey={apikey}&nonce={nonce}&timestamp={timestamp}&signature={signature}', headers={'Content-Type': 'application/json', 'Accept': 'application/json', 'Authorization': bearertoken}, data=body, verify=False)
+
 def getListInfo(code):
     nonce = uuid.uuid4()
     timestamp = int(time.time())
