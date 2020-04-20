@@ -79,3 +79,5 @@ def logFilm(code, review, rating, spoilers, rewatched, date, liked, tags):
     )
     signature = signature.hexdigest()
     r = requests.post(f'https://api.letterboxd.com/api/v0/log-entries?apikey={apikey}&nonce={nonce}&timestamp={timestamp}&signature={signature}', headers={'Content-Type': 'application/json', 'Accept': 'application/json', 'Authorization': bearertoken}, data=body, verify=False)
+    
+    
