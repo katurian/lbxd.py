@@ -1,6 +1,6 @@
 from setup import *
 
-def postComment(code, comment):
+def postEntryComment(code, comment):
     nonce = uuid.uuid4()
     timestamp = int(time.time())
     method = "POST"
