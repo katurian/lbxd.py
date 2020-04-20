@@ -71,7 +71,6 @@ def logFilm(code, review, rating, spoilers, rewatched, date, liked, tags):
     url = f'https://api.letterboxd.com/api/v0/log-entries?apikey={apikey}&nonce={nonce}&timestamp={timestamp}'
     body = {'rating': rating, 'review':{'containsSpoilers': spoilers, 'text': review}, 'diaryDetails':{'rewatch': rewatched, 'diaryDate': date}, 'like': liked, 'filmId': code, 'tags':tags}
     body = json.dumps(body)
-    headers = {'Content-Type': 'application/json', 'Accept': 'application/json', 'Authorization': bearertoken}
     bytestring = b"\x00".join(
         [str.encode(method), str.encode(url), str.encode(body)]
     )
@@ -79,4 +78,4 @@ def logFilm(code, review, rating, spoilers, rewatched, date, liked, tags):
         str.encode(apisecret), bytestring, digestmod=hashlib.sha256
     )
     signature = signature.hexdigest()
-    r = requests.post(f'https://api.letterboxd.com/api/v0/log-entries?apikey={apikey}&nonce={nonce}&timestamp={timestamp}&signature={signature}', headers=headers, data=body, verify=False)
+    r = requests.post(f'https://api.letterboxd.com/api/v0/log-entries?apikey={apikey}&nonce={nonce}&timestamp={timestamp}&signature={signature}', headers={'Content-Type': 'application/json', 'Accept': 'application/json', 'Authorization': bearertoken}, data=body, verify=False)
