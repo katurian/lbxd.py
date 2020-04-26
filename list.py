@@ -106,3 +106,5 @@ def createList(name, description, entries, tags, ranked):
     )
     signature = signature.hexdigest()
     r = requests.post(f'https://api.letterboxd.com/api/v0/lists?apikey={apikey}&nonce={nonce}&timestamp={timestamp}&signature={signature}', headers=headers, data=body, verify=False)
+
+    
