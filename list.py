@@ -106,5 +106,21 @@ def createList(name, description, entries, tags, ranked):
     )
     signature = signature.hexdigest()
     r = requests.post(f'https://api.letterboxd.com/api/v0/lists?apikey={apikey}&nonce={nonce}&timestamp={timestamp}&signature={signature}', headers=headers, data=body, verify=False)
-
+  
+def getListsByTag(tagger, query):
+    query = query.replace(" ", "%20")
+    nonce = uuid.uuid4()
+    timestamp = int(time.time())
+    method = "GET"
+    url = f'https://api.letterboxd.com/api/v0/lists?tagCode={query}&sort=Date&tagger={tagger}&includeTaggerFriends=None&perPage=300&apikey={apikey}&nonce={nonce}&timestamp={timestamp}'
+    bytestring = b"\x00".join(
+        [str.encode(method), str.encode(url), str.encode("")]
+    )
+    signature = hmac.new(
+        str.encode(apisecret), bytestring, digestmod=hashlib.sha256
+    )
+    signature = signature.hexdigest()
     
+    r = requests.get(f'https://api.letterboxd.com/api/v0/lists?tagCode={query}&sort=Date&tagger={tagger}&includeTaggerFriends=None&perPage=300&apikey={apikey}&nonce={nonce}&timestamp={timestamp}&signature={signature}', verify=False)
+    resultJSON = r.json()
+    return resultJSON
